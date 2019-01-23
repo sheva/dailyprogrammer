@@ -1,6 +1,5 @@
 class HexColours {
 
-
     String hexcolor(int... values) {
         if (values.length != 3) {
             return "";
