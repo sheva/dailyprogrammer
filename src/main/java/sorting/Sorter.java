@@ -14,7 +14,7 @@ class Sorter {
         return result;
     }
 
-    private Pair<List<Integer>, List<Integer>> split(List<Integer> list) {
+    Pair<List<Integer>, List<Integer>> split(List<Integer> list) {
         List<Integer> list1;
         List<Integer> list2;
 
