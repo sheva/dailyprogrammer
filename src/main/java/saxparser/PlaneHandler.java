@@ -16,57 +16,75 @@ class PlaneHandler extends DefaultHandler {
     private String tempValue;
     private Seller tempSeller;
     private Location tempLocation;
+    
+    enum QName {
+        AD, SELLER, LOCATION, YEAR, MAKE, MODEL, COLOR, DESCRIPTION, PRICE, CITY, STATE
+    }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        if (qName.equals("ad")) {
-            tempPlane = Plane.builder().build();
-        }
-        if (qName.equals("seller")) {
-            tempSeller = new Seller();
-            tempSeller.setPhone(attributes.getValue("phone"));
-            tempSeller.setEmail(attributes.getValue("email"));
-        }
-        if (qName.equals("location")) {
-            tempLocation = new Location();
+        if (qName == null) return; 
+        
+        switch (qName.toUpperCase()) {
+            case AD:    
+                tempPlane = Plane.builder().build(); 
+                break;
+            case SELLER: {
+                tempSeller = new Seller();
+                tempSeller.setPhone(attributes.getValue("phone"));
+                tempSeller.setEmail(attributes.getValue("email"));
+                break;
+            }
+            case LOCATION:  
+                tempLocation = new Location(); 
+                break;
+            default: 
+                throw new IllegalArgumentException("Invalid qName value " + qName);
         }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) {
-        if (qName.equals("ad")) {
-            planes.add(tempPlane);
-        }
-        if (qName.equals("year")) {
-            tempPlane.setYear(Integer.parseInt(tempValue));
-        }
-        if (qName.equals("make")) {
-            tempPlane.setMake(tempValue);
-        }
-        if (qName.equals("model")) {
-            tempPlane.setModel(tempValue);
-        }
-        if (qName.equals("color")) {
-            tempPlane.setColour(tempValue);
-        }
-        if (qName.equals("description")) {
-            tempPlane.setDescription(tempValue);
-        }
-        if (qName.equals("price")) {
-            tempPlane.setPrice(DoubleParser.parse(tempValue));
-        }
-        if (qName.equals("seller")) {
-            tempSeller.setName(tempValue);
-            tempPlane.setSeller(tempSeller);
-        }
-        if (qName.equals("location")) {
-            tempPlane.setLocation(tempLocation);
-        }
-        if (qName.equals("city")) {
-            tempLocation.setCity(tempValue);
-        }
-        if (qName.equals("state")) {
-            tempLocation.setState(tempValue);
+        if (qName == null) return; 
+        
+        switch (qName.toUpperCase()) {
+            case AD:    
+                planes.add(tempPlane); 
+                break;
+            case YEAR:  
+                tempPlane.setYear(Integer.parseInt(tempValue)); 
+                break;
+            case MAKE:  
+                tempPlane.setMake(tempValue);   
+                break;
+            case MODEL: 
+                tempPlane.setModel(tempValue);  
+                break;
+            case COLOR: 
+                tempPlane.setColour(tempValue); 
+                break;
+            case CITY:  
+                tempLocation.setCity(tempValue);    
+                break;
+            case STATE: 
+                tempLocation.setState(tempValue);   
+                break;   
+            case PRICE: 
+                tempPlane.setPrice(DoubleParser.parse(tempValue)); 
+                break;
+            case SELLER: {
+                tempSeller.setName(tempValue);
+                tempPlane.setSeller(tempSeller);
+                break;
+            }
+            case LOCATION:  
+                tempPlane.setLocation(tempLocation);  
+                break;
+            case DESCRIPTION:   
+                tempPlane.setDescription(tempValue); 
+                break;     
+            default: 
+                throw new IllegalArgumentException("Invalid qName value " + qName);
         }
     }
 
